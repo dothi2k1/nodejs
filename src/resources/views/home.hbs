@@ -1,2 +1,5 @@
 <h1>home page</h1>
-<h3>{{data}}</h3>
+
+{{#each data}}
+<li>{{this.name}} - {{this.email}}</li>
+{{/each}}

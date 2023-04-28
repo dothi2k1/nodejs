@@ -1,22 +1,22 @@
+const accountModel = require('../models/accountModel');
+
 class SiteController {
     index(red, res) {
 
-        // results = connection.query('SELECT * FROM `accounts`', function(error, results, fields) {});
-        let results = {
-            name: 'thiblue',
-            age: 30
-        }
 
-        var text = "";
-        for (var key in results) {
-            text += results[key];
-        }
-        res.render('home', { data: text });
-        // datane = connection.query('SELECT * FROM `accounts`', function(error, results, fields) {
-        //     if (error) throw error;
+        // Gọi hàm lấy danh sách tài khoản từ accountModel
+        accountModel.getAllAccounts((error, results) => {
+            if (error) {
+                console.log(error);
+                res.status(500).send('Lỗi khi lấy danh sách tài khoản');
+            } else {
+                // Hiển thị danh sách tài khoản lên trang home
+                res.render('home', { data: results });
+            }
+        });
 
-        //     res.render('home', { data: datane });
-        // });
+
+
     }
 
     intro(red, res) {
