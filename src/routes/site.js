@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const siteController = require('../app/controllers/SiteController')
 
+router.use('/user/editStudent', siteController.editStudent)
 router.use('/intro', siteController.intro)
 router.use('/', siteController.index)
 

@@ -11,13 +11,29 @@ function getAllAccounts(callback) {
 }
 
 // Định nghĩa hàm để tạo mới tài khoản
-function createAccount(account, callback) {
-    connection.query('INSERT INTO accounts SET ?', account, (error, result) => {
-        if (error) {
-            return callback(error, null);
-        }
-        return callback(null, result.insertId);
-    });
+function createAccount() {
+
+    if (req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            const postData = querystring.parse(body);
+            console.log(postData);
+            res.end(`Data received: ${JSON.stringify(postData)}`);
+        });
+    } else {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('Hello World!');
+    }
+
+    // connection.query('INSERT INTO accounts SET ?', account, (error, result) => {
+    //     if (error) {
+    //         return callback(error, null);
+    //     }
+    //     return callback(null, result.insertId);
+    // });
 }
 
 // Xuất các hàm để sử dụng ở bên ngoài module
