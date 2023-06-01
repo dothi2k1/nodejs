@@ -4,6 +4,7 @@ function getProductList() {
     axios.get('/admin/editProducts')
         .then(response => {
             const products = response.data;
+            console.log(products);
             const productList = document.getElementById('product-list');
             productList.innerHTML = '';
             products.forEach(product => {
@@ -13,7 +14,7 @@ function getProductList() {
               <td>${product.name}</td>
               <td>${product.price}</td>
               <td>
-              <a href="${product.id}"><input type="submit" value="Edit"></a>
+              <a href="/admin/product/${product.id}"><input type="submit" value="Edit"></a>
                 <input type="submit" value="Delete">
               </td>
 

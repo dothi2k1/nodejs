@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 
 // create the connection to database
 const connection = mysql.createConnection({
+    port: 3308,
     host: 'localhost',
     user: 'root',
     database: 'nodejs',
@@ -13,7 +14,7 @@ const connection = mysql.createConnection({
 // simple query
 // connection.query(
 //     'SELECT * FROM `accounts`',
-//     function(err, results, fields) {
+//     function (err, results, fields) {
 //         // document.write('Kết Nối Sql Thành Công');
 //         console.log('Kết Nối Sql Thành Công');
 //         console.log(results); // results contains rows returned by server
