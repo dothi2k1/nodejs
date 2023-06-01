@@ -1,0 +1,51 @@
+<%- include('../header') %>
+
+    <div class="container">
+        <h2>Edit Product</h2>
+        <form id="edit-form">
+            <label for="edit-name">Name:</label>
+            <input type="text" id="edit-name" name="name" required>
+            <br>
+            <label for="edit-price">Price:</label>
+            <input type="number" id="edit-price" name="price" required>
+            <br>
+            <button type="submit">Update</button>
+            <button id="delete-btn">Delete</button>
+        </form>
+    </div>
+    <script>// Lấy thông tin sản phẩm để chỉnh sửa
+        const editForm = document.getElementById('edit-form');
+        const deleteButton = document.getElementById('delete-btn');
+
+        editForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const id = editForm.dataset.productId;
+            const name = document.getElementById('edit-name').value;
+            const price = document.getElementById('edit-price').value;
+            axios.put(`/admin/editProducts${id}`, { name, price })
+                .then(response => {
+                    console.log('Product updated successfully');
+                    getProductList();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+
+        deleteButton.addEventListener('click', event => {
+            event.preventDefault();
+            const id = editForm.dataset.productId;
+            axios.delete(`/admin/editProducts${id}`)
+                .then(response => {
+                    console.log('Product deleted successfully');
+                    getProductList();
+                    editForm.reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+
+    <%- include('../footer') %>
