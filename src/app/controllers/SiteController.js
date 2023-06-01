@@ -3,8 +3,34 @@ const axios = require('axios');
 const querystring = require('querystring');
 const connection = require('../../configs/connectDB')
 
+
 class SiteController {
-    index(red, res) {
+    index(req, res) {
+
+
+        const itemsPerPage = 10;
+        const totalItems = 100;
+
+        // Trang hiện tại (lấy từ query parameter hoặc mặc định là 1)
+        const currentPage = parseInt(req.query.page) || 1;
+
+        // Tính toán vị trí phần tử bắt đầu và kết thúc trên trang hiện tại
+        const startItem = (currentPage - 1) * itemsPerPage;
+        const endItem = startItem + itemsPerPage - 1;
+
+        // Tổng số trang
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        // Dữ liệu giả
+        const data = [];
+        for (let i = 1; i <= totalItems; i++) {
+            data.push(`Item ${i}`);
+        }
+
+        // Dữ liệu của trang hiện tại
+        const currentPageData = data.slice(startItem, endItem + 1);
+        // console.log(totalPages)
+        // Render template và truyền dữ liệu vào
 
 
         // Gọi hàm lấy danh sách tài khoản từ accountModel
@@ -14,9 +40,21 @@ class SiteController {
                 res.status(500).send('Lỗi khi lấy danh sách tài khoản');
             } else {
                 // Hiển thị danh sách tài khoản lên trang home
-                res.render('home', { data: results });
+                for (let i = 1; i <= totalItems; i++) {
+                    results.push(`Item ${i}`);
+                }
+
+                // Dữ liệu của trang hiện tại
+                const currentPageData = results.slice(startItem, endItem + 1);
+                res.render('page/home', {
+                    data: currentPageData,
+                    currentPage: currentPage,
+                    pages: [1, 2, 3, 4, 5],
+                    totalPages: totalPages
+                });
             }
         });
+
 
 
 
@@ -78,12 +116,16 @@ class SiteController {
 
     intro(red, res) {
 
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(response => response.json())
-            .then(json => {
-                res.render('intro', { data: json });
-                // console.log(json)
+
+        axios.get('https://jsonplaceholder.typicode.com/posts')
+            .then(response => {
+                // console.log(response.data);
+                res.render('intro', { data: response.data });
             })
+            .catch(error => {
+                console.log(error);
+            });
+
 
     }
 }

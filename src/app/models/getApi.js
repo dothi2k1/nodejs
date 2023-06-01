@@ -10,4 +10,4 @@ function getApi() {
         });
 }
 
-module.exports = getApi;+
+module.exports = getApi;
